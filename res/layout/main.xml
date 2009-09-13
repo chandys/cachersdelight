@@ -3,33 +3,37 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
+	android:gravity="center_horizontal"
+	android:background="@color/ui_background"
 	>
 
 	<LinearLayout android:id="@+id/LinearLayout01"
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:paddingTop="5dp" android:paddingBottom="5dp"
+		android:background="@color/ui_background"
 		>
 		
 		<Button
 			android:text="Sort"
 			android:id="@+id/Button01"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
+			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
 			>
 		</Button>		
 		<Button
 			android:text="Filter"
 			android:id="@+id/Button02"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
+			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
 			>
 		</Button>		
 		<Button
 			android:text="Map"
 			android:id="@+id/Button03"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dip" android:layout_marginRight="10dip"
+			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
 			>
 		</Button>		
 	</LinearLayout>
@@ -37,7 +41,9 @@
 	<TextView android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" 
 		android:text="@string/hello" 
-		android:gravity="center_horizontal"/>
+		android:gravity="center_horizontal"
+		android:textColor="@color/text"
+		/>
 
 
 
