@@ -125,7 +125,7 @@
 					android:ellipsize="marquee"
 					android:fadingEdge="horizontal"
 					android:text="by Kylearan, Killoyle " 
-					android:textColor="@color/text"
+					android:textColor="@color/text_secondary"
 					android:paddingRight="8sp"
 				/>
 				
@@ -151,7 +151,7 @@
 					android:textSize="12sp" 
 					android:singleLine="true"
 					android:text="Terrain: 4" 
-					android:textColor="@color/text"
+					android:textColor="@color/text_secondary"
 					android:paddingRight="8sp"
 				/>
 
@@ -163,7 +163,7 @@
 					android:singleLine="true"
 					android:text="Difficulty: 2" 
 					android:gravity="left"
-					android:textColor="@color/text"
+					android:textColor="@color/text_secondary"
 					android:paddingRight="8sp"
 				/>
 
@@ -182,7 +182,7 @@
 						android:singleLine="true"
 						android:text="856m" 
 						android:gravity="right"
-						android:textColor="@color/text"
+						android:textColor="@color/text_secondary"
 						android:paddingRight="8sp"
 					/>
 

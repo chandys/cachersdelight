@@ -3,4 +3,5 @@
 	<color name="ui_background">#FF9000</color>
 	<color name="text_background">#FFFFFF</color>
 	<color name="text">#000000</color>
+	<color name="text_secondary">#444444</color>
 </resources>
