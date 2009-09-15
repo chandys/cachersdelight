@@ -1,50 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:gravity="center_horizontal"
+	android:orientation="vertical"
 	android:background="@color/ui_background"
 	>
 
+	<!-- database used -->
+	<TextView android:layout_width="fill_parent" 
+		android:layout_height="wrap_content" 
+		android:text="@string/cachelist_dbused" 
+		android:gravity="center_horizontal"
+		android:textColor="@color/text"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		/>
+
+	<!-- buttons -->
 	<LinearLayout android:id="@+id/LinearLayout01"
 		android:orientation="horizontal"
-		android:layout_width="wrap_content"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="5dp" android:paddingBottom="5dp"
 		android:background="@color/ui_background"
+		android:gravity="center_horizontal"
 		>
 		
 		<Button
-			android:text="Sort"
-			android:id="@+id/Button01"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+			android:text="@string/cachelist_buttontext_sort"
+			android:id="@+id/cachelist_button_sort"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
 			>
 		</Button>		
 		<Button
-			android:text="Filter"
-			android:id="@+id/Button02"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+			android:text="@string/cachelist_buttontext_filter"
+			android:id="@+id/cachelist_button_filter"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
 			>
 		</Button>		
 		<Button
-			android:text="Map"
-			android:id="@+id/Button03"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+			android:text="@string/cachelist_buttontext_map"
+			android:id="@+id/cachelist_button_map"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
 			>
 		</Button>		
 	</LinearLayout>
 
-	<TextView android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" 
-		android:text="@string/hello" 
-		android:gravity="center_horizontal"
-		android:textColor="@color/text"
-		/>
+	<!-- cachelist entry -->
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/text_background"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		>
+		
+		<!-- cache type and size -->
+		<LinearLayout android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:gravity="center"
+			android:paddingLeft="5dp"
+			android:paddingRight="10dp"
+			>
+			<ImageView android:id="@+id/cachelistentry_cachetype"
+				android:src="@drawable/cachetype_multi"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+			/>
+			<ImageView android:id="@+id/cachelistentry_cachesize"
+				android:src="@drawable/cachesize_regular"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+			/>
+		</LinearLayout>
 
+		<!-- cache details -->
+		<LinearLayout android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			>
+			
+			<!-- cache name -->
+			<TextView android:id="@+id/cachelistentry_name"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:ellipsize="marquee"
+				android:fadingEdge="horizontal"
+				android:textSize="16sp" 
+				android:singleLine="true"
+				android:text="This is a fantastic cache" 
+				android:gravity="left"
+				android:textColor="@color/text"
+			/>
+
+			<!-- cache owner and rating -->
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				>
+				
+				<!--  owner -->
+				<TextView android:id="@+id/cachelistentry_owner"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:textSize="12sp" 
+					android:singleLine="true"
+					android:ellipsize="marquee"
+					android:fadingEdge="horizontal"
+					android:text="by Kylearan, Killoyle" 
+					android:textColor="@color/text"
+					android:paddingLeft="5dp"
+					android:paddingRight="5dp"
+				/>
+				
+				<!-- rating -->
+				<!-- Have to use LinearLayout wrapper here so that ImageView can be aligned right -->
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:gravity="right|center_vertical"
+					>				
+					<ImageView android:id="@+id/cachelistentry_rating"
+						android:src="@drawable/rating_3"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+					/>				
+				</LinearLayout>
+				
+			</LinearLayout>
+			
+			<!-- Terrain, Diff, Distance and Heading -->
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				>
+
+				<!--  terrain -->
+				<TextView android:id="@+id/cachelistentry_terrain"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:textSize="12sp" 
+					android:singleLine="true"
+					android:text="Terrain: 4" 
+					android:textColor="@color/text"
+					android:paddingLeft="5dp"
+					android:paddingRight="5dp"
+					android:paddingTop="2dp"
+					android:paddingBottom="2dp"
+				/>
+
+				<!--  difficulty -->
+				<TextView android:id="@+id/cachelistentry_difficulty"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:textSize="12sp" 
+					android:singleLine="true"
+					android:text="Difficulty: 2" 
+					android:gravity="left"
+					android:textColor="@color/text"
+					android:paddingLeft="5dp"
+					android:paddingRight="5dp"
+					android:paddingTop="2dp"
+					android:paddingBottom="2dp"
+				/>
+
+				<!-- distance -->
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:gravity="right|center_vertical"
+					>
+
+					<!-- distance -->
+					<TextView android:id="@+id/cachelistentry_distance"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textSize="12sp" 
+						android:singleLine="true"
+						android:text="856m" 
+						android:gravity="right"
+						android:textColor="@color/text"
+						android:paddingLeft="5dp"
+						android:paddingRight="5dp"
+						android:paddingTop="2dp"
+						android:paddingBottom="2dp"
+					/>
+
+					<ImageView android:id="@+id/cachelistentry_heading"
+						android:src="@drawable/arrow_up"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+					/>
+				</LinearLayout>
+				
+			</LinearLayout>
+											
+		</LinearLayout>
+				
+	</LinearLayout>
 
 
 
