@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Test CacheList!</string>
     <string name="app_name">Cacher's Delight</string>
+
+    <string name="cachelist_dbused">Database: standard</string>
+    <string name="cachelist_buttontext_sort">Sort</string>
+    <string name="cachelist_buttontext_filter">Filter</string>
+    <string name="cachelist_buttontext_map">Map</string>
 </resources>
