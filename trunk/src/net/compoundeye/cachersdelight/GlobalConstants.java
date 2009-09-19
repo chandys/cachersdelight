@@ -12,6 +12,11 @@ public interface GlobalConstants {
 	public static final int CACHETYPE_VIRTUAL = 5;
 	public static final int CACHETYPE_MYSTERY = 6;
 	public static final int CACHETYPE_WEBCAM = 7;
+	public static final int CACHETYPE_CITO = 8;
+	public static final int CACHETYPE_MEGAEVENT = 9;
+	public static final int CACHETYPE_REVERSE = 10;
+	public static final int CACHETYPE_WHERIGO = 11;
+	
 
 	// Cache sizes
 	public static final int CACHESIZE_UNKNOWN = -1;
