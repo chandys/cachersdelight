@@ -11,6 +11,7 @@ public interface GlobalConstants {
 	public static final int CACHETYPE_LETTERBOX = 4;
 	public static final int CACHETYPE_VIRTUAL = 5;
 	public static final int CACHETYPE_MYSTERY = 6;
+	public static final int CACHETYPE_WEBCAM = 7;
 
 	// Cache sizes
 	public static final int CACHESIZE_UNKNOWN = -1;
