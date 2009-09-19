@@ -5,3 +5,4 @@ todos:
 - create theme/style for UI (orange background, ...)
 - make "Database:" field in CacheList clickable
 - optimize CacheList layout
+- add support for cachetypes: mega-event, CITO, Wherigo
