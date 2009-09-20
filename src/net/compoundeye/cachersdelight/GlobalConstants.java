@@ -16,7 +16,6 @@ public interface GlobalConstants {
 	public static final int CACHETYPE_MEGAEVENT = 9;
 	public static final int CACHETYPE_REVERSE = 10;
 	public static final int CACHETYPE_WHERIGO = 11;
-	
 
 	// Cache sizes
 	public static final int CACHESIZE_UNKNOWN = -1;
