@@ -57,7 +57,7 @@ public class CacheList extends Activity {
 			}
 		} else {
 			// TODO: Call syncFileWithDatabase?
-			Log.d(TAG, dir.getName() + " is no directory!");
+			Log.w(TAG, dir.getName() + " is no directory!");
 		}
 	}
 
@@ -75,12 +75,14 @@ public class CacheList extends Activity {
 		XmlPullParser xpp;
 
 		Log.d(TAG, "Syncing file " + file.getName());
+		
 		try {
+
 			// Prepare XML parser
 			factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
 			xpp = factory.newPullParser();
-			xpp.setInput(new BufferedReader(new FileReader(file)));
+			xpp.setInput(new BufferedInputStream(new FileInputStream(file)), null);
 
 			if (file.getName().toLowerCase().endsWith(".loc")) {
 				syncLocFileWithDatabase(dbName, xpp, stats);
@@ -88,18 +90,18 @@ public class CacheList extends Activity {
 				syncGpxFileWithDatabase(dbName, xpp, stats);
 			} else {
 				// TODO: Alert user
-				Log.d(TAG, "WARNING: " + file.getName()
+				Log.w(TAG, "WARNING: " + file.getName()
 						+ " is of unknown file type!");
 			}
 		} catch (FileNotFoundException e) {
 			// TODO: Alert user
-			Log.d(TAG, "File not found: " + file.getName());
+			Log.w(TAG, "File not found: " + file.getName());
 		} catch (IOException e) {
 			// TODO: Alert user
-			Log.d(TAG, "IEOxception: " + e);
+			Log.w(TAG, "IEOxception: " + e);
 		} catch (XmlPullParserException e) {
 			// TODO: Alert user
-			Log.d(TAG, "XML error: " + e);
+			Log.w(TAG, "XML error: " + e);
 		}
 	}
 
@@ -119,9 +121,16 @@ public class CacheList extends Activity {
 	 */
 	private void syncLocFileWithDatabase(String dbName, XmlPullParser xpp, DBSyncStatistics stats)
 			throws XmlPullParserException, IOException {
-		String tagName, currentText;
-		int eventType = xpp.getEventType();
-
+		String tagName,
+			currentText = null,
+			attributeName;
+		int eventType,
+			numAttributes,
+			byIndex,
+			i;
+		GeocacheOverviewData cacheData = null;
+		
+		eventType = xpp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			switch(eventType) {
 			case XmlPullParser.START_DOCUMENT:
@@ -134,18 +143,48 @@ public class CacheList extends Activity {
 					// ignore loc tags
 				} else if (tagName.equals("waypoint")) {
 					// sync last cache, if there is one then start new one
+					if (cacheData != null) {
+						// store data in DB
+					} else {
+						cacheData = new GeocacheOverviewData();
+					}
 				} else if (tagName.equals("name")) {
 					// get cache ID
+					numAttributes = xpp.getAttributeCount();
+					for (i = 0; i < numAttributes; i++) {
+						attributeName = xpp.getAttributeName(i).toLowerCase();
+						if (attributeName.equals("id")) {
+							cacheData.id = xpp.getAttributeValue(i);
+							Log.d(TAG, "id = " + cacheData.id);
+						} else {
+							// unknown attribute! Log and ignore.
+							Log.w(TAG, "WARNING: Unknown attribute for name: " + attributeName);							
+						}
+					}
 				} else if (tagName.equals("coord")) {
-					// do coords
+					// get coords
+					numAttributes = xpp.getAttributeCount();
+					for (i = 0; i < numAttributes; i++) {
+						attributeName = xpp.getAttributeName(i).toLowerCase();
+						if (attributeName.equals("lat")) {
+							cacheData.latitude = Double.parseDouble(xpp.getAttributeValue(i));
+							Log.d(TAG, "lat = " + cacheData.latitude);
+						} else if (attributeName.equals("lon")) {
+							cacheData.longitude = Double.parseDouble(xpp.getAttributeValue(i));
+							Log.d(TAG, "long = " + cacheData.longitude);
+						} else {
+							// unknown attribute! Log and ignore.
+							Log.w(TAG, "WARNING: Unknown attribute for coord: " + attributeName);							
+						}
+					}
 				} else if (tagName.equals("type")) {
-					// check for "geocache", otherwise throw error
+					// ignore tag "type" - should be "geocache", but don't check for performance reasons
 				} else if (tagName.equals("link")) {
 					// ignore link tags for now.
 					// Might change if support for other geocaching sites will be added
 				} else {
 					// unknown tag! Log and ignore.
-					Log.d(TAG, "WARNING: Unknown tag: " + tagName);
+					Log.w(TAG, "WARNING: Unknown tag: " + tagName);
 				}
 				break;
 			case XmlPullParser.TEXT:
@@ -153,13 +192,29 @@ public class CacheList extends Activity {
 				// text for later use in case we're inside a <name> tag
 				// TODO: If performance is a problem, check if xpp.getTextCharacters() is faster (should avoid generating a new String object)
 				currentText = xpp.getText();
-				Log.d(TAG, "Retrieved text: " + currentText);
 				break;
 			case XmlPullParser.END_TAG:
+				tagName = xpp.getName().toLowerCase();
+				if (tagName.equals("name")) {
+					// Extract name and owner
+					if (currentText == null) {
+						Log.w(TAG, "WARNING: name tag has no text!");
+					} else {
+						byIndex = currentText.lastIndexOf(" by ");
+						if (byIndex == -1) {
+							Log.w(TAG, "WARNING: name tag has no ' by ' substring!");
+						} else {
+							cacheData.name = currentText.substring(0, byIndex);
+							cacheData.owner = currentText.substring(byIndex + 4);
+							currentText = null;
+							Log.d(TAG, "Name: " + cacheData.name + ", owner: " + cacheData.owner);
+						}
+					}
+				}
 				break;
 			default:
 				// This should not happen!
-				Log.d(TAG, "WARNING: This should not have happened: eventType = " + eventType);
+				Log.e(TAG, "WARNING: This should not have happened: eventType = " + eventType);
 			}
 			
 			eventType = xpp.next();
@@ -170,7 +225,7 @@ public class CacheList extends Activity {
 	
 	private void syncGpxFileWithDatabase(String dbName, XmlPullParser xpp, DBSyncStatistics stats)
 			throws XmlPullParserException {
-		Log.d(TAG, "WARNING: GPX parse not yet implemented");
+		Log.w(TAG, "WARNING: GPX parser not yet implemented");
 	}
 
 }
