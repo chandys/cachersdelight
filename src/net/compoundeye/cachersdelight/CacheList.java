@@ -105,8 +105,21 @@ public class CacheList extends Activity {
 
 	
 	
+	/**
+	 * Parse a LOC XML documet and sync it with a given database.
+	 * Relies upon the fact that every tag name is unique inside a
+	 * waypoint entry. Ugly, but works. :-)
+	 * 
+	 * @param dbName Name of the database to sync into
+	 * @param xpp A XmlPullParser set to START_DOCUMENT
+	 * @param stats A DBSyncStatistics to keep statistics
+	 * 
+	 * @throws XmlPullParserException
+	 * @throws IOException
+	 */
 	private void syncLocFileWithDatabase(String dbName, XmlPullParser xpp, DBSyncStatistics stats)
 			throws XmlPullParserException, IOException {
+		String tagName, currentText;
 		int eventType = xpp.getEventType();
 
 		while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -115,13 +128,34 @@ public class CacheList extends Activity {
 				Log.d(TAG, "Start");
 				break;
 			case XmlPullParser.START_TAG:
+				tagName = xpp.getName().toLowerCase();
+				Log.d(TAG, "TagName: " + tagName);
+				if (tagName.equals("loc")) {
+					// ignore loc tags
+				} else if (tagName.equals("waypoint")) {
+					// sync last cache, if there is one then start new one
+				} else if (tagName.equals("name")) {
+					// get cache ID
+				} else if (tagName.equals("coord")) {
+					// do coords
+				} else if (tagName.equals("type")) {
+					// check for "geocache", otherwise throw error
+				} else if (tagName.equals("link")) {
+					// ignore link tags for now.
+					// Might change if support for other geocaching sites will be added
+				} else {
+					// unknown tag! Log and ignore.
+					Log.d(TAG, "WARNING: Unknown tag: " + tagName);
+				}
 				break;
 			case XmlPullParser.TEXT:
+				// Since getName() won't return the last opened tag unfortunately, store
+				// text for later use in case we're inside a <name> tag
+				// TODO: If performance is a problem, check if xpp.getTextCharacters() is faster (should avoid generating a new String object)
+				currentText = xpp.getText();
+				Log.d(TAG, "Retrieved text: " + currentText);
 				break;
 			case XmlPullParser.END_TAG:
-				break;
-			case XmlPullParser.END_DOCUMENT:
-				Log.d(TAG, "End");
 				break;
 			default:
 				// This should not happen!
