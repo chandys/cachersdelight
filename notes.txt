@@ -1,8 +1,10 @@
 todos:
 -------
 
-- (re)draw small arrows in CacheList
+- refactor xml parsing out of CacheList into helper class (different package?)
 - create theme/style for UI (orange background, ...)
-- make "Database:" field in CacheList clickable
+- make "Database:" field in CacheList a drop-down list
+- add database manager menu entry in CacheList
 - optimize CacheList layout
 - look at file formats of CacheWolf/GSAK/...whatever PC tools there are
+- add support for opencaching.de and similar sites: enhanced LOC/GPX file format?, LOC link, web access, ...
