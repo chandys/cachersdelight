@@ -135,11 +135,9 @@ public class GeocacheImporter {
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			switch(eventType) {
 			case XmlPullParser.START_DOCUMENT:
-				Log.d(TAG, "Start");
 				break;
 			case XmlPullParser.START_TAG:
 				tagName = xpp.getName().toLowerCase();
-				Log.d(TAG, "TagName: " + tagName);
 				if (tagName.equals("loc")) {
 					// ignore loc tags
 				} else if (tagName.equals("waypoint")) {
