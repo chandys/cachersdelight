@@ -1,7 +1,7 @@
 package net.compoundeye.cachersdelight;
 
 public class GeocacheData {
-
+	
 	// Cache types
 	public static final int CACHETYPE_UNKNOWN = -1;
 	public static final int CACHETYPE_TRADITIONAL = 0;
@@ -25,4 +25,11 @@ public class GeocacheData {
 	public static final int CACHESIZE_LARGE = 3;
 	public static final int CACHESIZE_NOTCHOSEN = 4;
 
+	public GeocacheOverviewData overviewData = null;
+	public GeocacheDetailData detailData = null;
+	
+	public GeocacheData(GeocacheOverviewData overviewData, GeocacheDetailData detailData) {
+		this.overviewData = overviewData;
+		this.detailData = detailData;
+	}
 }
