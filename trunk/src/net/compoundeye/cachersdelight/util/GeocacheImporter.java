@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import net.compoundeye.cachersdelight.DBManager;
 import net.compoundeye.cachersdelight.DBSyncStatistics;
 import net.compoundeye.cachersdelight.GeocacheData;
 import net.compoundeye.cachersdelight.GeocacheDetailData;
@@ -34,7 +35,7 @@ public class GeocacheImporter {
 	 * @return true if sync was successful
 	 */
 
-	public void syncPathWithDatabase(String dbName, String path, DBSyncStatistics stats) {
+	public void syncPathWithDatabase(DBManager dbManager, String path, DBSyncStatistics stats) {
 		File dir;
 		File[] fileList;
 
@@ -52,7 +53,7 @@ public class GeocacheImporter {
 		if (dir.isDirectory()) {
 			fileList = dir.listFiles(new CacheFileFilter());
 			for (int i = 0; i < fileList.length; i++) {
-				syncFileWithDatabase(dbName, fileList[i], stats);
+				syncFileWithDatabase(dbManager, fileList[i], stats);
 			}
 		} else {
 			// TODO: Call syncFileWithDatabase?
@@ -69,7 +70,7 @@ public class GeocacheImporter {
 	 *            the File to sync from
 	 * @throws XmlPullParserException
 	 */
-	public void syncFileWithDatabase(String dbName, File file, DBSyncStatistics stats) {
+	public void syncFileWithDatabase(DBManager dbManager, File file, DBSyncStatistics stats) {
 		XmlPullParserFactory factory;
 		XmlPullParser xpp;
 
@@ -84,9 +85,9 @@ public class GeocacheImporter {
 			xpp.setInput(new BufferedInputStream(new FileInputStream(file)), null);
 
 			if (file.getName().toLowerCase().endsWith(".loc")) {
-				syncLocFileWithDatabase(dbName, xpp, stats);
+				syncLocFileWithDatabase(dbManager, xpp, stats);
 			} else if (file.getName().toLowerCase().endsWith(".gpx")) {
-				syncGpxFileWithDatabase(dbName, xpp, stats);
+				syncGpxFileWithDatabase(dbManager, xpp, stats);
 			} else {
 				// TODO: Alert user
 				Log.w(TAG, "WARNING: " + file.getName()
@@ -118,7 +119,7 @@ public class GeocacheImporter {
 	 * @throws XmlPullParserException
 	 * @throws IOException
 	 */
-	private void syncLocFileWithDatabase(String dbName, XmlPullParser xpp, DBSyncStatistics stats)
+	private void syncLocFileWithDatabase(DBManager dbManager, XmlPullParser xpp, DBSyncStatistics stats)
 			throws XmlPullParserException, IOException {
 		String tagName,
 			currentText = null,
@@ -126,6 +127,7 @@ public class GeocacheImporter {
 		int eventType,
 			numAttributes,
 			byIndex,
+			syncResult,
 			i;
 		GeocacheOverviewData cacheData = null;
 		GeocacheDetailData cacheDetails = new GeocacheDetailData();
@@ -207,10 +209,31 @@ public class GeocacheImporter {
 					}
 				} else if (tagName.equals("waypoint")) {
 					/* Store cache in DB */
-					// LOC only has cache id for the details
-					Log.d(TAG, "Syncing cache " + cacheData.name + " with DB...");
-					cacheDetails.id = cacheData.id;
-					// XXX
+					// Check if essential data is missing
+					if (cacheData == null ||
+							cacheData.latitude == GeocacheOverviewData.COORD_UNDEFINED ||
+							cacheData.longitude == GeocacheOverviewData.COORD_UNDEFINED ||
+							cacheData.name == null || cacheData.owner == null ||
+							cacheData.id == null) {
+						Log.d(TAG, "Cannot store cache in DB - missing data");
+						stats.failed++;
+					} else {
+						// LOC only has cache id for the details
+						Log.d(TAG, "Syncing cache " + cacheData.name + " with DB...");
+						cacheDetails.id = cacheData.id;
+						syncResult = dbManager.syncGeocache(cache);
+						if (syncResult == DBManager.SYNC_ADDED) {
+							stats.added++;
+						} else if (syncResult == DBManager.SYNC_UPDATED) {
+							stats.updated++;
+						} else if (syncResult == DBManager.SYNC_ERROR) {
+							// TODO: Alert user
+							Log.w(TAG, "WARNING: DBManager.syncGeocache() returned an error!");
+						} else {
+							// This should not happen!
+							Log.w(TAG, "WARNING: Unknown result from DBManager.syncGeocache():" + syncResult);
+						}
+					}
 				}
 				break;
 			default:
@@ -224,7 +247,7 @@ public class GeocacheImporter {
 
 
 	
-	private void syncGpxFileWithDatabase(String dbName, XmlPullParser xpp, DBSyncStatistics stats)
+	private void syncGpxFileWithDatabase(DBManager dbManager, XmlPullParser xpp, DBSyncStatistics stats)
 			throws XmlPullParserException {
 		Log.w(TAG, "WARNING: GPX parser not yet implemented");
 	}
