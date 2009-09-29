@@ -8,3 +8,15 @@ todos:
 - optimize CacheList layout
 - look at file formats of CacheWolf/GSAK/...whatever PC tools there are
 - add support for opencaching.de and similar sites: enhanced LOC/GPX file format?, LOC link, web access, ...
+- add support for multiple databases
+- investigate indexes for SQLite
+
+
+
+fine-tune:
+-----------
+
+- rename GeocacheData to Geocache (or is Geocache more than Data? state?)
+- rename DBManager to DbManager
+- rename local parameters/vars "Var var" to "Var mVar"
+ 

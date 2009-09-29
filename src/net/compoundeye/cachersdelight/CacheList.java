@@ -16,6 +16,8 @@ public class CacheList extends Activity {
 	// Log tag
 	private static final String TAG = "CacheList";
 
+	private DBManager dbManager;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,13 @@ public class CacheList extends Activity {
 		setContentView(R.layout.main);
 
 		Log.d(TAG, "Calling sync");
+		dbManager = new DBManager(this);
+		dbManager.open();
 		GeocacheImporter imp = new GeocacheImporter();
 		DBSyncStatistics stats = new DBSyncStatistics();
-		imp.syncPathWithDatabase("standard", "/sdcard/download", stats);
+		imp.syncPathWithDatabase(dbManager, "/sdcard/download", stats);
 		Log.d(TAG, "Added: " + stats.added + ", updated: " + stats.updated + ", failed: " + stats.failed);
+		dbManager.close();
 	}
 
 

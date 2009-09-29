@@ -13,12 +13,15 @@ package net.compoundeye.cachersdelight;
  */
 public class GeocacheOverviewData {
 
+	public static final double COORD_UNDEFINED = -1;
+	public static final int RATING_UNDEFINED = -1;
+	
 	public String id = null,
 		name = null,
 		owner = null;
-	public double longitude = -1,
-		latitude = -1;
-	public int terrain = -1,
-		difficulty = -1,
-		rating = -1;
+	public double longitude = COORD_UNDEFINED,
+		latitude = COORD_UNDEFINED;
+	public int terrain = RATING_UNDEFINED,
+		difficulty = RATING_UNDEFINED,
+		rating = RATING_UNDEFINED;
 }
