@@ -1,0 +1,1 @@
+CachersDelight is a free geocaching application for Android, focusing on an easy and fast user interface, support for online and offline use, helper tools especially for multi-caches and a seamless integration of the GCVote rating system.
